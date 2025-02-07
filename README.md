@@ -134,7 +134,8 @@ Remember that the server must be running before the client.
 ## 💬 Example Usage <a name="usage"></a>
 
 <p align="center">
-https://github.com/user-attachments/assets/2aed407e-7a06-40fc-9a9e-31e11289815b
+  <a href="" rel="noopener">
+ <img src="https://github.com/lvbealr/Socket/blob/main/docs/socket.gif" alt="Socket Gif"></a>
 </p>
 
 ---
