@@ -24,7 +24,7 @@ This project consists of a **Server** and **Client** application, where:
 
 ---
 
-## 🔄 How It Works
+## 🔄 How It Works <a name = "how_it_works"></a>
 
 ### Server (Server Side)
 The server listens on a specified port and waits for incoming messages from the client. When a message is received, the server echoes the message back.
@@ -134,10 +134,7 @@ Remember that the server must be running before the client.
 ## 💬 Example Usage <a name="usage"></a>
 
 <p align="center">
-<video width="854" height="480" controls autoplay loop muted>
-  <source src="https://i.imgur.com/ejgh6mg.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/user-attachments/assets/2aed407e-7a06-40fc-9a9e-31e11289815b
 </p>
 
 ---
