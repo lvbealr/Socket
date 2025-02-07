@@ -1,6 +1,6 @@
 #include "server.h"
 
-#define INITIALIZE_SOCKET_INFO_(socketInfoPtr, sunFamily) {           \
+#define INITIALIZE_SOCKET_INFO_(socketInfoPtr, sunFamily) do {        \
     if (argc == 1) {                                                  \
         initializeSocketInfo(socketInfoPtr, sunFamily, "./socket");   \
     }                                                                 \
@@ -8,23 +8,26 @@
     else {                                                            \
         initializeSocketInfo(socketInfoPtr, sunFamily, argv[--argc]); \
     }                                                                 \
-}
+} while (0)
 
 int main(int argc, char *argv[]) {
     /* Socket Initializing */
-    SOCKET serverDescr = socket(AF_UNIX, SOCK_STREAM, 0);
+    SOCKET serverDescr = socket(AF_UNIX, SOCK_STREAM, DEFAULT_PROTOCOL);
 
     /* Socket Binding */
     sockaddr_un socketInfo = {};
     INITIALIZE_SOCKET_INFO_(&socketInfo, AF_UNIX);
 
-    STATUS bindingStatus = bindSocket(serverDescr, (sockaddr *) &socketInfo, (int) sizeof(socketInfo));
+    serverError bindingStatus = bindSocket(serverDescr, (sockaddr *) &socketInfo, (int) sizeof(socketInfo));
 
     /* Listening */
-    STATUS listenStatus = listenServer(serverDescr, 1); // TODO 1?
+    serverError listenStatus  = listenServer(serverDescr, MAX_CLIENT_COUNT);
 
     /* Interaction */
-    STATUS interactStatus = socketInteractor(serverDescr, NULL, NULL, 0, &socketInfo);
+    serverError interactionStatus = CLIENT_DISCONNECTED;
+    while (interactionStatus != NO_SERVER_ERROR) {
+        interactionStatus = socketInteractor(serverDescr, NULL, NULL, DEFAULT_FLAGS, &socketInfo);
+    }
 
     return 0;
 }
@@ -40,10 +43,10 @@ int main(int argc, char *argv[]) {
 /* ======================================================================================================================================== */
 
 SOCKET initializeSocket(int domain, int type, int protocol) {
-    SOCKET serverDescr = socket(domain, type, protocol); // (AF_UNIX = use UNIX I/O)
+    SOCKET serverDescr = socket(domain, type, protocol);
     ON_DEBUG(customPrint(red, bold, bgDefault,
                          "Errno status: [%d] on line %d\n", errno, __LINE__));
-    customAssert(serverDescr != -1, NO_SOCKET_INITIALIZED);
+    customAssert(serverDescr != ERROR, NO_SOCKET_INITIALIZED);
 
     ON_DEBUG(customPrint(green, underlined, bgDefault,
                          "SOCKET INITIALIZED: [%d] (descr)\n", serverDescr);)
@@ -61,7 +64,7 @@ serverError initializeSocketInfo(sockaddr_un *socketInfo, unsigned short sunFami
 
     ON_DEBUG(customPrint(yellow, normal, bgDefault,
                          "sockaddr_un.sun_family = [%d]\nsockaddr_un.sun_path = [%s]\n",
-                         socketInfo.sun_family, socketInfo.sun_path);)
+                         socketInfo->sun_family, socketInfo->sun_path);)
 
     return NO_SERVER_ERROR;
 }
@@ -73,7 +76,7 @@ serverError bindSocket(int serverDescr, sockaddr *myAddr, size_t addrLen) {
     ON_DEBUG(customPrint(green, bold, bgDefault,
                          "BINDING STATUS: [%d]\n", bindingStatus));
 
-    customAssert(bindingStatus != -1, FAILED_TO_BIND);
+    customAssert(bindingStatus != ERROR, FAILED_TO_BIND);
 
     return NO_SERVER_ERROR;
 }
@@ -84,7 +87,7 @@ serverError listenServer(int serverDescr, int backLog) {
     ON_DEBUG(customPrint(green, bold, bgDefault,
                          "LISTEN STATUS: [%d]\n", listenStatus));
 
-    customAssert(listenStatus != -1, FAILED_TO_LISTEN);
+    customAssert(listenStatus != ERROR, FAILED_TO_LISTEN);
 
     customPrint(lightblue, bold, bgDefault, "Listening...\n");
 
@@ -97,7 +100,7 @@ SOCKET acceptClient(int serverDescr, sockaddr *myAddr, unsigned int *addrLen) {
                          "errno status: [%d] on line %d\n", errno, __LINE__));
     ON_DEBUG(customPrint(green, bold, bgDefault,
                          "CLIENT DESCRIPTOR: [%d]\n", clientDescr));
-    customAssert(clientDescr != -1, FAILED_TO_ACCEPT);
+    customAssert(clientDescr != ERROR, FAILED_TO_ACCEPT);
 
     customPrint(green, bold, bgDefault,
                 "Connection established!\n\n");
@@ -112,8 +115,14 @@ serverError receiveMessage(int clientDescr, char **msgBuffer, size_t bufferSize,
     ON_DEBUG(customPrint(green, bold, bgDefault,
                          "RECEIVING MSG STATUS: [%d]\n", recvStatus));
 
+    if (recvStatus == 0) {
+        customPrint(red, bold, bgDefault,
+                    "\nClient disconnected!\n");
+        return CLIENT_DISCONNECTED;
+    }
+
     customPrint(purple, bold, bgDefault,
-                ">> ");
+                "\n [Received from %d] >> ", clientDescr);
     customPrint(white, bold, bgDefault,
                 "%s", *msgBuffer);
 
@@ -132,6 +141,10 @@ serverError socketInteractor(int serverDescr, sockaddr *myAddr, unsigned int *ad
 
     while (strcmp(msgBuffer, TERMINAL_MSG)) {
         STATUS recvStatus = receiveMessage(clientDescr, &msgBuffer, MAX_MSG_SIZE, flags);
+
+        if (recvStatus == CLIENT_DISCONNECTED) {
+            return CLIENT_DISCONNECTED;
+        }
     }
 
     customPrint(red, bold, bgDefault,

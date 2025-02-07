@@ -21,8 +21,14 @@
     ptr = NULL;         \
 } while (0)
 
-const size_t MAX_MSG_SIZE  = 100;
-const char  *TERMINAL_MSG  = "END";
+const size_t MAX_MSG_SIZE     = 100;
+const char  *TERMINAL_MSG     = "END";
+
+const int    MAX_CLIENT_COUNT = 1;
+const int    DEFAULT_PROTOCOL = 0;
+const int    DEFAULT_FLAGS    = 0;
+
+const int    ERROR            = -1;
 
 enum serverError {
     NO_SERVER_ERROR       = 0,
@@ -33,7 +39,8 @@ enum serverError {
     MSG_BUFFER_ERROR      = 5,
     TERMINATE             = 6,
     SOCKET_INFO_NULL_PTR  = 7,
-    SUN_PATH_NULL_PTR     = 8
+    SUN_PATH_NULL_PTR     = 8,
+    CLIENT_DISCONNECTED   = 9
 };
 
 typedef int STATUS;
