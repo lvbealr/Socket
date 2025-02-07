@@ -2,7 +2,7 @@
 
 #define INITIALIZE_SOCKET_INFO_(socketInfoPtr, sunFamily) do {                \
     if (argc == 1) {                                                          \
-        initializeSocketInfo(socketInfoPtr, sunFamily, "../server/socket");   \
+        initializeSocketInfo(socketInfoPtr, sunFamily, "./socket");           \
     }                                                                         \
                                                                               \
     else {                                                                    \
