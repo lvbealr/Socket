@@ -16,7 +16,13 @@
     #define ON_DEBUG(...)
 #endif
 
-const size_t MAX_MSG_SIZE = 100;
+#define FREE_(ptr) do { \
+    free(ptr);          \
+    ptr = NULL;         \
+} while (0)
+
+const size_t MAX_MSG_SIZE  = 100;
+const char  *TERMINAL_MSG  = "END";
 
 enum serverError {
     NO_SERVER_ERROR       = 0,
@@ -25,18 +31,24 @@ enum serverError {
     FAILED_TO_LISTEN      = 3,
     FAILED_TO_ACCEPT      = 4,
     MSG_BUFFER_ERROR      = 5,
-    TERMINATE             = 6
+    TERMINATE             = 6,
+    SOCKET_INFO_NULL_PTR  = 7,
+    SUN_PATH_NULL_PTR     = 8
 };
 
-typedef int SERVER_ERROR;
+typedef int STATUS;
 typedef int SOCKET;
 
 // FUNCTION PROTOTYPES //
-SERVER_ERROR initializeSocket(int domain,      int       type,    int           protocol);
-SERVER_ERROR bindingSocket   (int serverDescr, sockaddr *myAddr,  size_t        addrLen);
-SERVER_ERROR listenServer    (int serverDescr, int       backLog);
-SERVER_ERROR acceptClient    (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen);
-SERVER_ERROR receiveMessage  (int clientDescr, char     **buffer,  size_t        bufferSize, int flags);
+SOCKET      initializeSocket    (int          domain,     int            type,            int   protocol);
+serverError initializeSocketInfo(sockaddr_un *socketInfo, unsigned short sunFamily, const char *sunPath);
+
+serverError bindSocket          (int serverDescr, sockaddr *myAddr,  size_t        addrLen);
+serverError listenServer        (int serverDescr, int       backLog);
+SOCKET      acceptClient        (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen);
+serverError receiveMessage      (int clientDescr, char    **buffer,  size_t        bufferSize, int flags);
+
+serverError socketInteractor    (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen,    int flags, sockaddr_un *socketInfo);
 // FUNCTION PROTOTYPES //
 
 #endif // SERVER_H_
