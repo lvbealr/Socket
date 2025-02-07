@@ -96,7 +96,7 @@ To get started, simply clone this repository and build both the server and clien
 
 ```bash
 git clone git@github.com:lvbealr/Socket.git
-cd linkedList/
+cd Socket/
 ```
 
 ### Build and Using
