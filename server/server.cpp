@@ -66,6 +66,9 @@ serverError initializeSocketInfo(sockaddr_un *socketInfo, unsigned short sunFami
                          "sockaddr_un.sun_family = [%d]\nsockaddr_un.sun_path = [%s]\n",
                          socketInfo->sun_family, socketInfo->sun_path);)
 
+    customPrint(green, bold, bgDefault,
+                "Path to socket file: [%s]\n", socketInfo->sun_path);
+
     return NO_SERVER_ERROR;
 }
 

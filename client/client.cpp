@@ -61,7 +61,7 @@ clientError initializeSocketInfo(sockaddr_un *socketInfo, unsigned short sunFami
 
     ON_DEBUG(customPrint(yellow, normal, bgDefault,
                          "sockaddr_un.sun_family = [%d]\nsockaddr_un.sun_path = [%s]\n",
-                         socketInfo.sun_family, socketInfo.sun_path);)
+                         socketInfo->sun_family, socketInfo->sun_path);)
 
     return NO_CLIENT_ERROR;
 }
