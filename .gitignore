@@ -51,3 +51,23 @@ Module.symvers
 Mkfile.old
 dkms.conf
 .idea/
+
+# CMake files
+CMakeFiles/
+CMakeCache.txt
+cmake-build-debug/
+cmake_install.cmake
+
+server/cmake_install.cmake
+server/CMakeFiles
+server/Makefile
+
+client/cmake_install.cmake
+client/CMakeFiles
+client/Makefile
+
+# Binaries
+server/mksock
+client/client
+
+

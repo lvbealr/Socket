@@ -81,7 +81,7 @@ Socket/
 
 ## 🛠️ Prerequisites <a name = "prerequisites"></a>
 - A C++ compiler (e.g., `g++`)
-- Make (for building)
+- CMake (for building)
 - A terminal or command line interface
 
 ---
@@ -106,13 +106,12 @@ First of all, initialize submodule <b>customWarning</b> and <b>colorPrint</b>.
 ```bash
 git submodule update --init --remote --recursive
 ```
-You can use <b>MAKE</b> to build the program and run it.
+You can use <b>CMake</b> to build the program and run it.
 
 Enter the following command in the terminal:
 
 ```bash
-make server
-make client
+cmake . && make
 ```
 
 Once compiled you can run the executable with the following command.
@@ -140,13 +139,13 @@ Remember that the server must be running before the client.
 
 ---
 
-## ⛏️ Built Using <a name = "built_using"></a>
+## ⛏ Built Using <a name = "built_using"></a>
 
 - [customWarning](https://github.com/lvbealr/customWarning) - Warning Module
 - [colorPrint](https://github.com/lvbealr/colorPrint) - Module For Colourful Print
 
 ---
 
-## ✍️ Authors <a name = "authors"></a>
+## ✍ Authors <a name = "authors"></a>
 
 - [@lvbealr](https://github.com/lvbealr) - Idea & Initial work
