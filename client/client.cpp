@@ -3,9 +3,7 @@
 #define INITIALIZE_SOCKET_INFO_(socketInfoPtr, sunFamily) do {                \
     if (argc == 1) {                                                          \
         initializeSocketInfo(socketInfoPtr, sunFamily, "./socket");           \
-    }                                                                         \
-                                                                              \
-    else {                                                                    \
+    } else {                                                                  \
         initializeSocketInfo(socketInfoPtr, sunFamily, argv[--argc]);         \
     }                                                                         \
 } while (0)
