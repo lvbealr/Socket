@@ -3,9 +3,7 @@
 #define INITIALIZE_SOCKET_INFO_(socketInfoPtr, sunFamily) do {        \
     if (argc == 1) {                                                  \
         initializeSocketInfo(socketInfoPtr, sunFamily, "./socket");   \
-    }                                                                 \
-                                                                      \
-    else {                                                            \
+    } else {                                                          \
         initializeSocketInfo(socketInfoPtr, sunFamily, argv[--argc]); \
     }                                                                 \
 } while (0)
@@ -26,7 +24,7 @@ int main(int argc, char *argv[]) {
     /* Interaction */
     serverError interactionStatus = CLIENT_DISCONNECTED;
     while (interactionStatus != NO_SERVER_ERROR) {
-        interactionStatus = socketInteractor(serverDescr, NULL, NULL, DEFAULT_FLAGS, &socketInfo);
+        interactionStatus = interactBySocket(serverDescr, NULL, NULL, DEFAULT_FLAGS, &socketInfo);
     }
 
     return 0;
@@ -39,7 +37,7 @@ int main(int argc, char *argv[]) {
 /* serverError listenServer(int serverDescr, int backLog) ================================================================================= */
 /* SOCKET      acceptClient(int serverDescr, sockaddr *myAddr, unsigned int *addrLen) ===================================================== */
 /* serverError receiveMessage(int clientDescr, char **msgBuffer, size_t bufferSize, int flags) ============================================ */
-/* serverError socketInteractor(int serverDescr, sockaddr *myAddr, unsigned int *addrLen, int flags, sockaddr_un socketInfo) ============== */
+/* serverError interactBySocket(int serverDescr, sockaddr *myAddr, unsigned int *addrLen, int flags, sockaddr_un socketInfo) ============== */
 /* ======================================================================================================================================== */
 
 SOCKET initializeSocket(int domain, int type, int protocol) {
@@ -134,7 +132,7 @@ serverError receiveMessage(int clientDescr, char **msgBuffer, size_t bufferSize,
     return NO_SERVER_ERROR;
 }
 
-serverError socketInteractor(int serverDescr, sockaddr *myAddr, unsigned int *addrLen, int flags, sockaddr_un *socketInfo) {
+serverError interactBySocket(int serverDescr, sockaddr *myAddr, unsigned int *addrLen, int flags, sockaddr_un *socketInfo) {
     customAssert(socketInfo != NULL, SOCKET_INFO_NULL_PTR);
 
     SOCKET clientDescr = acceptClient(serverDescr, myAddr, addrLen);

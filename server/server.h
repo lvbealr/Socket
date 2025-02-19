@@ -55,7 +55,7 @@ serverError listenServer        (int serverDescr, int       backLog);
 SOCKET      acceptClient        (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen);
 serverError receiveMessage      (int clientDescr, char    **buffer,  size_t        bufferSize, int flags);
 
-serverError socketInteractor    (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen,    int flags, sockaddr_un *socketInfo);
+serverError interactBySocket    (int serverDescr, sockaddr *myAddr,  unsigned int *addrLen,    int flags, sockaddr_un *socketInfo);
 // FUNCTION PROTOTYPES //
 
 #endif // SERVER_H_

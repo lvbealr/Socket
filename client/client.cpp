@@ -13,7 +13,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main(int argc, char *argv[]) {
-    /* Socket Initializing*/
+    /* Socket Initializing */
     SOCKET clientDescr = socket(AF_UNIX, SOCK_STREAM, DEFAULT_PROTOCOL);
 
     /* Connecting */
@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
     clientError connectionStatus  = setConnection(clientDescr, (sockaddr *) &socketInfo, sizeof(socketInfo));
 
     /* Interaction */
-    clientError interactionStatus = socketInteractor(clientDescr, STDIN_FILENO);
+    clientError interactionStatus = interactBySocket(clientDescr, STDIN_FILENO);
 
     return interactionStatus;
 }
@@ -36,7 +36,7 @@ int main(int argc, char *argv[]) {
 /* SOCKET      initializeSocket(int domain, int type, int protocol) ============================================ */
 /* clientError initializeSocketInfo(sockaddr_un *socketInfo, unsigned short sunFamily, const char *sunPath) ==== */
 /* clientError setConnection(int clientDescr, sockaddr *socketInfo, size_t size) =============================== */
-/* clientError socketInteractor(int clientDescr, int inputStream) ============================================== */
+/* clientError interactBySocket(int clientDescr, int inputStream) ============================================== */
 /* ============================================================================================================= */
 
 SOCKET initializeSocket(int domain, int type, int protocol) {
@@ -85,7 +85,7 @@ clientError setConnection(int clientDescr, sockaddr *socketInfo, size_t size) {
     return NO_CLIENT_ERROR;
 }
 
-clientError socketInteractor(int clientDescr, int inputStream) {
+clientError interactBySocket(int clientDescr, int inputStream) {
     char *msgBuffer = (char *)calloc(MAX_MSG_SIZE, sizeof(char));
     customAssert(msgBuffer != NULL, MSG_BUFFER_ERROR);
 

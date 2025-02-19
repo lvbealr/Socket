@@ -39,7 +39,7 @@ typedef int SOCKET;
 SOCKET      initializeSocket    (int          domain,      int            type,             int    protocol);
 clientError initializeSocketInfo(sockaddr_un *socketInfo,  unsigned short sunFamily,  const char  *sunPath);
 clientError setConnection       (int          clientDescr, sockaddr      *socketInfo,       size_t size);
-clientError socketInteractor    (int          clientDescr, int            inputStream);
+clientError interactBySocket    (int          clientDescr, int            inputStream);
 // FUNCTION PROTOTYPES //
 
 #endif // CLIENT_H_
