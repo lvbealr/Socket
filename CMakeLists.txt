@@ -18,11 +18,9 @@ set(DEBUG_FLAGS "-D _DEBUG -ggdb3 -std=c++17 -O0 -Wall -Wextra -Weffc++ -Waggres
 							 float-cast-overflow,float-divide-by-zero,integer-divide-by-zero,leak,nonnull-attribute,null,object-size,       \
 							 return,returns-nonnull-attribute,shift,signed-integer-overflow,undefined,unreachable,vla-bound,vptr")
 
-set(RELEASE_FLAGS "-D NDEBUG -std=c++17 -O3")
+set(RELEASE_FLAGS "-DNDEBUG -std=c++17 -O3")
 
-get_property(CURRENT_CONFIG GLOBAL PROPERTY CONFIG)
-
-if (CURRENT_CONFIG STREQUAL "Debug")
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     set(FLAGS ${DEBUG_FLAGS})
 else()
     set(FLAGS ${RELEASE_FLAGS})
