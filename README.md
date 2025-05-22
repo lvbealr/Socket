@@ -111,7 +111,7 @@ You can use <b>CMake</b> to build the program and run it.
 Enter the following command in the terminal:
 
 ```bash
-cmake . && make
+cmake -DCMAKE_BUILD_TYPE=Release -S . -B build && cd build && make
 ```
 
 Once compiled you can run the executable with the following command.
