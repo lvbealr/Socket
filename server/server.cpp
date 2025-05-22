@@ -137,7 +137,7 @@ serverError interactBySocket(int serverDescr, sockaddr *myAddr, unsigned int *ad
 
     SOCKET clientDescr = acceptClient(serverDescr, myAddr, addrLen);
 
-    char *msgBuffer = (char *)calloc(MAX_MSG_SIZE, sizeof(char)); // TODO FREE
+    char *msgBuffer = (char *)calloc(MAX_MSG_SIZE, sizeof(char));
     customAssert(msgBuffer != NULL, MSG_BUFFER_ERROR);
 
     while (strcmp(msgBuffer, TERMINAL_MSG)) {
